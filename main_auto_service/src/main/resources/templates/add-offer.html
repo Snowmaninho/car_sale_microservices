@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новое объявление</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5 mb-5">
+    <h1>Add offer</h1>
+    <form th:action="@{/offers/add}" method="post">
+        <label> Title
+            <input type="text" name="title" placeholder="Type offer title" class="form-control"/>
+        </label><br>
+        <label> Info
+            <input type="text" name="anonsName" placeholder="Type short information" class="form-control"/>
+        </label><br>
+        <label> Make
+            <input type="text" name="carMark" placeholder="Type car make" class="form-control"/>
+        </label><br>
+        <label> Model
+            <input type="text" name="carModel" placeholder="Type car model" class="form-control"/>
+        </label><br>
+        <label> Year
+            <input type="text" name="carYear" placeholder="Type car year" class="form-control"/>
+        </label><br>
+        <label> Power
+            <input type="text" name="carPower" placeholder="Type car power" class="form-control"/>
+        </label><br>
+        <label> Price
+            <input type="text" name="carPrice" placeholder="Type car price" class="form-control"/>
+        </label><br><br>
+        <textarea name="offerText" placeholder="Type a description of your car" class="form-control"></textarea><br>
+        <button type="submit" class="btn btn-success">Добавить объявление</button>
+    </form>
+
+</div>
+
+</body>
+</html>
