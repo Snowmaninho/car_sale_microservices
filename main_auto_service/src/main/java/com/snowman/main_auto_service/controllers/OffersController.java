@@ -34,10 +34,10 @@ public class OffersController {
     }
 
     @PostMapping("/add")
-    public String addNewOffer(@RequestParam String title, @RequestParam String anonsName, @RequestParam String carMark,
-                              @RequestParam String carModel, @RequestParam String carYear, @RequestParam String carPower,
-                              @RequestParam String carPrice, @RequestParam String offerText, Model model) {
-        Offer offer = offerService.createOffer(title, anonsName,"RandomAuthor", carMark, carModel, carYear, carPower, carPrice, offerText);
+    public String addNewOffer(@RequestParam String title, @RequestParam String anonsName, @RequestParam String carMake,
+                              @RequestParam String carModel, @RequestParam int carYear, @RequestParam int carPower,
+                              @RequestParam int carPrice, @RequestParam String offerText, Model model) {
+        Offer offer = offerService.createOffer(title, anonsName,"RandomAuthor", carMake, carModel, carYear, carPower, carPrice, offerText);
         offerService.saveOffer(offer);
         return "redirect:/offers";
     }

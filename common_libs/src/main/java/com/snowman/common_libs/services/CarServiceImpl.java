@@ -16,8 +16,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car createCar(String carMark, String carModel, String carYear, String carPower, String carPrice) {
-        return new Car().setCarMark(carMark).setCarModel(carModel).setCarYear(carYear).setCarPower(carPower).setCarPrice(carPrice);
+    public Car createCar(String carMake, String carModel, int carYear, int carPower, int carPrice) {
+        return new Car().setCarMake(carMake).setCarModel(carModel).setCarYear(carYear).setCarPower(carPower).setCarPrice(carPrice);
     }
 
     @Override

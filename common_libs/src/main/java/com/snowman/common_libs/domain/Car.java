@@ -15,11 +15,11 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String carMark;
+    private String carMake;
     private String carModel;
-    private String carYear;
-    private String carPrice;
-    private String carPower;
+    private int carYear;
+    private int carPrice;
+    private int carPower;
 
     public Car() {
     }

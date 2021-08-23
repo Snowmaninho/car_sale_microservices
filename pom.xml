@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>main_auto_service</module>
+		<module>offer_generator</module>
 	</modules>
 
 </project>

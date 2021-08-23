@@ -19,8 +19,14 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer createOffer(String title, String anonsName, String authorName, String carMark, String carModel, String carYear, String carPower, String carPrice, String offerText) {
-        Car car = carService.createCar(carMark, carModel, carYear, carPower, carPrice);
+    public Offer createOffer(String title, String anonsName, String authorName, String carMake, String carModel, int carYear, int carPower, int carPrice, String offerText) {
+        Car car = carService.createCar(carMake, carModel, carYear, carPower, carPrice);
+        carService.saveCar(car);
+        return new Offer().setTitle(title).setAnonsName(anonsName).setAuthorName(authorName).setCar(car).setOfferText(offerText);
+    }
+
+    @Override
+    public Offer createOffer(String title, String anonsName, String authorName, Car car, String offerText) {
         carService.saveCar(car);
         return new Offer().setTitle(title).setAnonsName(anonsName).setAuthorName(authorName).setCar(car).setOfferText(offerText);
     }
