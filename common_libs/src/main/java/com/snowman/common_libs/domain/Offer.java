@@ -5,13 +5,14 @@ import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Component
 @Data
 @Entity
 @Table(name = "offers")
 @Accessors(chain = true)
-public class Offer {
+public class Offer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
