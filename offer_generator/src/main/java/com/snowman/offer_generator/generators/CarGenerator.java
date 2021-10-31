@@ -1,7 +1,8 @@
 package com.snowman.offer_generator.generators;
 
 import com.snowman.common_libs.domain.Car;
-import com.snowman.common_libs.services.CarServiceImpl;
+import com.snowman.common_libs.services.CarService;
+import com.snowman.common_libs.services.impl.CarServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +19,10 @@ public class CarGenerator {
     private int carMinPower;
     private int carMaxPower;
 
-    private CarServiceImpl carService;
+    private CarService carService;
 
     @Autowired
-    public CarGenerator(CarServiceImpl carService) {
+    public CarGenerator(CarService carService) {
         this.carService = carService;
     }
 

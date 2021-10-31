@@ -2,7 +2,7 @@ package com.snowman.main_auto_service.listeners;
 
 import com.snowman.common_libs.configs.RabbitConfig;
 import com.snowman.common_libs.domain.Offer;
-import com.snowman.common_libs.services.OfferServiceImpl;
+import com.snowman.common_libs.services.OfferService;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import java.util.List;
 @EnableRabbit
 public class OfferListener {
 
-    private OfferServiceImpl offerService;
+    private OfferService offerService;
 
     @Autowired
-    public OfferListener(OfferServiceImpl offerService) {
+    public OfferListener(OfferService offerService) {
         this.offerService = offerService;
     }
 

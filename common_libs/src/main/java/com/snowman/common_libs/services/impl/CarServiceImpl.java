@@ -1,7 +1,8 @@
-package com.snowman.common_libs.services;
+package com.snowman.common_libs.services.impl;
 
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.repos.CarRepo;
+import com.snowman.common_libs.services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

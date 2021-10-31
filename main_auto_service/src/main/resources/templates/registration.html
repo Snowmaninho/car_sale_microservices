@@ -2,21 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Авторизация</title>
+    <title>Регистрация</title>
 </head>
 <body>
-Страница авторизации
+Добавить нового пользователя
+<div th:if="${message} != null">
+    <p th:text="${message}"></p>
+</div>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
 <div th:if="${param.logout}">
     You have been logged out.
 </div>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/registration}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> First Name : <input type="text" name="firstName"/> </label></div>
+    <div><label> Last Name : <input type="text" name="lastName"/> </label></div>
+    <div><label> Email : <input type="email" name="email"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>
 </form>
-<a th:href="@{/registration}">Регистрация</a>
+<p>Click <a th:href="@{/login}">here</a> to return logIn page</p>
 </body>
 </html>

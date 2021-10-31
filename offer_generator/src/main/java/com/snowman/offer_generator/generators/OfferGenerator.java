@@ -2,7 +2,7 @@ package com.snowman.offer_generator.generators;
 
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.domain.Offer;
-import com.snowman.common_libs.services.OfferServiceImpl;
+import com.snowman.common_libs.services.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +11,10 @@ public class OfferGenerator {
 
     private CarGenerator carGenerator;
     private AuthorGenerator authorGenerator;
-    private OfferServiceImpl offerService;
+    private OfferService offerService;
 
     @Autowired
-    public OfferGenerator(CarGenerator carGenerator, AuthorGenerator authorGenerator, OfferServiceImpl offerService) {
+    public OfferGenerator(CarGenerator carGenerator, AuthorGenerator authorGenerator, OfferService offerService) {
         this.carGenerator = carGenerator;
         this.authorGenerator = authorGenerator;
         this.offerService = offerService;
