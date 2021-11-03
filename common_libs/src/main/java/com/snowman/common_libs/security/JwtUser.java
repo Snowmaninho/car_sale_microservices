@@ -1,4 +1,4 @@
-package com.snowman.main_auto_service.security.jwt;
+package com.snowman.common_libs.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

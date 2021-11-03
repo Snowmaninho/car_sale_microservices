@@ -1,22 +1,22 @@
-package com.snowman.main_auto_service.security.jwt;
+package com.snowman.auth_service.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import javax.servlet.http.Cookie;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import javax.servlet.http.Cookie;
+
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 
 // создаём класс для генерации токена
@@ -31,13 +31,6 @@ public class JwtTokenProvider {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-/*    // создаём бин энкодера, пригодится для шифрования пароля
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }*/
 
     @PostConstruct
     protected void init() {
@@ -63,15 +56,15 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return auth;
     }
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
+    public String resolveToken(Cookie[] cookies) {
 
         try {
             if( cookies == null || cookies.length < 1 ) {
@@ -85,10 +78,6 @@ public class JwtTokenProvider {
                     break;
                 }
             }
-
-/*        if( sessionCookie == null || StringUtils.isEmpty( sessionCookie.getValue() ) ) {
-            throw new AuthenticationServiceException( "Invalid Token" );
-        }*/
 
             String bearerToken = sessionCookie.getValue();
             if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
@@ -117,12 +106,6 @@ public class JwtTokenProvider {
     }
 
     private List<String> getRoleNames(String userRoles) {
-//        List<String> result = new ArrayList<>();
-//
-//        userRoles.forEach(role -> {
-//            result.add(role.getName());
-//        });
-
         return Collections.singletonList(userRoles);
     }
 }

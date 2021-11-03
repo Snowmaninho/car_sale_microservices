@@ -1,9 +1,8 @@
-package com.snowman.main_auto_service.security.jwt;
+package com.snowman.common_libs.security;
 
 
 import com.snowman.common_libs.domain.AppUser;
 import com.snowman.common_libs.domain.Status;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

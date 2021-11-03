@@ -18,6 +18,7 @@
 		<module>main_auto_service</module>
 		<module>offer_generator</module>
 		<module>auth_service</module>
+		<module>common_libs</module>
 	</modules>
 
 </project>

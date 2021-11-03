@@ -1,11 +1,8 @@
-package com.snowman.main_auto_service.security;
+package com.snowman.common_libs.security;
 
 import com.snowman.common_libs.domain.AppUser;
 import com.snowman.common_libs.services.UserService;
-import com.snowman.main_auto_service.security.jwt.JwtUser;
-import com.snowman.main_auto_service.security.jwt.JwtUserFactory;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

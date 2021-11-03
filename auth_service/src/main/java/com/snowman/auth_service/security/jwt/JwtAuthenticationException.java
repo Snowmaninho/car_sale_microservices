@@ -1,4 +1,4 @@
-package com.snowman.main_auto_service.security.jwt;
+package com.snowman.auth_service.security.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 

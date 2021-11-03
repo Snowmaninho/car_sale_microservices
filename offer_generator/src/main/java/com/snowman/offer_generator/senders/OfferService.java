@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 @EnableScheduling
-@Component
-public class OfferSender {
+//@Component
+@Service
+public class OfferService {
 
     private Random random;
     private int minOffers;
@@ -34,7 +36,7 @@ public class OfferSender {
     }
 
     @Autowired
-    public OfferSender(RabbitTemplate template, OfferGenerator offerGenerator) {
+    public OfferService(RabbitTemplate template, OfferGenerator offerGenerator) {
         this.template = template;
         this.offerGenerator = offerGenerator;
     }
