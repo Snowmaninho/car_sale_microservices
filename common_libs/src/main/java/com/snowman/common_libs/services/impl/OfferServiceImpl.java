@@ -6,6 +6,8 @@ import com.snowman.common_libs.repos.OfferRepo;
 import com.snowman.common_libs.services.CarService;
 import com.snowman.common_libs.services.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,9 +35,19 @@ public class OfferServiceImpl implements OfferService {
         return new Offer().setTitle(title).setAnonsName(anonsName).setAuthorName(authorName).setCar(car).setOfferText(offerText);
     }
 
-    @Override
+    /*@Override
     public Iterable<Offer> findAll() {
         return offerRepo.findAll();
+    }*/
+
+    @Override
+    public Page<Offer> findAll(Pageable pageable) {
+        return offerRepo.findAll(pageable);
+    }
+
+    @Override
+    public Page<Offer> findFilteredOffers(String carMake, String carModel, Integer carMinYear, Integer carMaxYear, Integer carMinPrice, Integer carMaxPrice, Integer carMinHp, Integer carMaxHp, Pageable pageable) {
+        return offerRepo.findAllByCarMakeAndCarModelAndCarYearAndCarPriceAndCarPower(carMake, carModel, carMinYear, carMaxYear, carMinPrice, carMaxPrice, carMinHp, carMaxHp, pageable);
     }
 
     @Override
