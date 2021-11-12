@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 
 @Configuration
@@ -46,6 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HOME_ENDPOINT, LOGIN_ENDPOINT, REGISTRATION_ENDPOINT).permitAll() // такой паттерн - разрешен доступ на все урлы, без аутентификации
                 .anyRequest().authenticated() // все остальные запросы должны быть аутентифицированы (либо админом, либо любой другой ролью - сначала нужно LogIn, иначе не пустит)
                 .and()
+                .logout()
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JwtAuthTokenInCookie")
+                .and()
                 .apply(new JwtConfigurer(userService, tokenService)); // и передаём конфиг в котором проверяем каждый запрос на наличие токена
     }
 
@@ -53,6 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect(){
+        return new SpringSecurityDialect();
     }
 }
 

@@ -4,10 +4,13 @@ import com.snowman.common_libs.domain.Offer;
 import com.snowman.common_libs.services.OfferService;
 import com.snowman.main_auto_service.dto.FilterFormDTO;
 
+import com.snowman.main_auto_service.entity.paging.Paged;
+import com.snowman.main_auto_service.entity.paging.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -49,6 +52,9 @@ public class OffersController {
         Page<Offer> offers = findFilteredOffers(filterForm, pageable);
         addParamsToModel(filterForm, offers, model);
 
+
+        model.addAttribute("posts", getPage(filterForm, pageable, currentPage, pageSize));
+
         return "offers";
     }
 
@@ -71,7 +77,7 @@ public class OffersController {
     @PostMapping("/add")
     public String addNewOffer(@RequestParam String title, @RequestParam String anonsName, @RequestParam String carMake,
                               @RequestParam String carModel, @RequestParam int carYear, @RequestParam int carPower,
-                              @RequestParam int carPrice, @RequestParam String offerText, Model model, Authentication auth) {
+                              @RequestParam int carPrice, @RequestParam String offerText, Authentication auth) {
         Offer offer = offerService.createOffer(title, anonsName, auth.getName(), carMake, carModel, carYear, carPower, carPrice, offerText);
         offerService.saveOffer(offer);
         return "redirect:/offers";
@@ -114,5 +120,10 @@ public class OffersController {
         attributes.put("minHp", filterForm.getCarMinHp());
         attributes.put("maxHp", filterForm.getCarMaxHp());
         return attributes;
+    }
+
+    public Paged<Offer> getPage(FilterFormDTO filterForm, Pageable pageable, int pageNumber, int size) {
+        Page<Offer> offerPage = findFilteredOffers(filterForm, pageable);
+        return new Paged<>(offerPage, Paging.of(offerPage.getTotalPages(), pageNumber, size));
     }
 }

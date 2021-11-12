@@ -29,7 +29,9 @@ public class TokenListener {
     }
 
     @RabbitListener(queues = RabbitConfig.RESOLVE_TOKEN_QUEUE)
-    public String resolveToken(Cookie[] cookies) {
-        return jwtTokenProvider.resolveToken(cookies);
+//    public String resolveToken(Cookie[] cookies) {
+    public String resolveToken(Cookie cookie) {
+//        return jwtTokenProvider.resolveToken(cookies);
+        return jwtTokenProvider.resolveToken(cookie);
     }
 }

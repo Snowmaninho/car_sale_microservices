@@ -64,27 +64,13 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(Cookie[] cookies) {
+    public String resolveToken(Cookie cookie) {
 
-        try {
-            if( cookies == null || cookies.length < 1 ) {
-                throw new AuthenticationServiceException( "Invalid Token" );
-            }
-
-            Cookie sessionCookie = null;
-            for( Cookie cookie : cookies ) {
-                if( ( "JwtAuthTokenInCookie" ).equals( cookie.getName() ) ) {
-                    sessionCookie = cookie;
-                    break;
-                }
-            }
-
-            String bearerToken = sessionCookie.getValue();
+            String bearerToken = cookie.getValue();
             if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
                 return bearerToken.substring(7, bearerToken.length());
             }
-        } catch (Exception e) {
-        }
+
         return null;
     }
 

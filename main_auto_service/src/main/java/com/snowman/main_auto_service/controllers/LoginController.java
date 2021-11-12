@@ -58,7 +58,8 @@ public class LoginController {
             Cookie sessionCookie = new Cookie("JwtAuthTokenInCookie", "Bearer_" + token);
             response.addCookie(sessionCookie);
 
-            return "greeting";
+            return "redirect:/";
+
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }

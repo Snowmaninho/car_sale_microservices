@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<style>
+<!--<style>
     .myPagination {
         display: inline-block;
     }
@@ -19,7 +19,7 @@
         color: white;
         border-radius: 2px;
     }
-</style>
+</style>-->
 
 <head>
     <title>Sale offers</title>
@@ -27,47 +27,77 @@
 </head>
 
 <body>
-<!--<h1 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h1>-->
 
-<!--<form th:action="@{/offers}" method="post" class="form-group">-->
-<form th:action="@{/offers}" method="post" class="form-group">
-    <div class="form-check-inline"><label> Car make: <input type="text" name="carMake"/> </label></div>
-    <div class="form-check-inline"><label> Car model: <input type="text" name="carModel"/> </label></div><br>
-    <div class="form-check-inline"><label> Car min year: <input type="text" name="carMinYear"/> </label></div>
-    <div class="form-check-inline"><label> Car max year: <input type="text" name="carMaxYear"/> </label></div><br>
-    <div class="form-check-inline"><label> Car min price: <input type="text" name="carMinPrice"/> </label></div>
-    <div class="form-check-inline"><label> Car max price: <input type="text" name="carMaxPrice"/> </label></div><br>
-    <div class="form-check-inline"><label> Car min HP: <input type="text" name="carMinHp"/> </label></div>
-    <div class="form-check-inline"><label> Car max HP: <input type="text" name="carMaxHp"/> </label></div><br>
-    <div><input type="submit" value="Search"/></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+
+<form th:action="@{/offers}" method="post" class="form-group mt-1">
+    <table>
+        <tr>
+            <td>Car make:</td>
+            <td><input type="text" name="carMake"/></td>
+            <td>Car model:</td>
+            <td><input type="text" name="carModel"/></td>
+        </tr>
+        <tr>
+            <td>Car min year:</td>
+            <td><input type="text" name="carMinYear"/></td>
+            <td>Car max year:</td>
+            <td><input type="text" name="carMaxYear"/></td>
+        </tr>
+        <tr>
+            <td>Car min price:</td>
+            <td><input type="text" name="carMinPrice"/></td>
+            <td>Car max price:</td>
+            <td><input type="text" name="carMaxPrice"/></td>
+        </tr>
+        <tr>
+            <td>Car min HP:</td>
+            <td><input type="text" name="carMinHp"/></td>
+            <td>Car max HP:</td>
+            <td><input type="text" name="carMaxHp"/></td>
+        </tr>
+        <tr>
+            <td><input class="btn btn-info gx-5" type="submit" value="Search"/></td>
+        </tr>
+    </table>
 </form>
 
-<div class="container mt-5">
-    <h1>All offers</h1>
-    <div th:each="element : ${offers}" class="alert alert-info mt-2">
-        <h3 th:text="${element.getAnonsName()}"/>
-        <p th:text="${element.getCar().getCarMake()} + ' ' + ${element.getCar().getCarModel() + ' ' + element.getCar().getCarYear() + ' y. ' + element.getCar().getCarPower() + ' hp. ' + element.getCar().getCarPrice() + ' rub.'}"/>
+<div class="container mt-1">
+    <h3>All offers</h3>
+    <div th:each="element : ${offers}" class="alert alert-info mt-1">
+        <h3 th:text="${element.getAnonsName()}"></h3>
+        <p th:text="${element.getCar().getCarMake()} + ' ' + ${element.getCar().getCarModel() + ' ' + element.getCar().getCarYear() + ' y. ' + element.getCar().getCarPower() + ' hp. ' + element.getCar().getCarPrice() + ' rub.'}"></p>
         <!--        <a th:href="'/offers/' + ${element.getId()}" class="btn btn-warning">Details</a>-->
     </div>
-</div>
-<div class="mx-auto" style="width: 200px;">
-    <div th:if="${offers.getTotalPages() > 0}" class="myPagination"
-         th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/offers(size=${offers.getSize()}, page=${pageNumber}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}"
-           th:text="${pageNumber}"
-           th:class="${pageNumber==offers.getNumber() + 1} ? active"></a>
-    </div>
-</div>
 
-<div>
-    <p>
-        <a th:href="@{/}">Home page</a>
-    </p>
+    <nav aria-label="Page navigation" class="paging">
+        <ul class="pagination" th:if="${posts.page.totalPages > 1}">
+            <li class="page-item" th:classappend="${!posts.paging.isPrevEnabled()? 'disabled' : ''}">
+                <!--            <a class="page-link" th:href="@{'/?pageNumber=' + ${posts.paging.pageNumber - 1}}"-->
+                <a class="page-link"
+                   th:href="@{/offers(size=${offers.getSize()}, page=${posts.paging.pageNumber - 1}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}"
+                   tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="item : ${posts.paging.getItems()}">
+                <li class="page-item" th:classappend="${item.index == posts.paging.pageNumber? 'active' : ''}"
+                    th:if="${item.pageItemType.name() == 'PAGE'}">
+                    <!--                <a class="page-link" th:href="@{'/?pageNumber=' + ${item.index}}"-->
+                    <a class="page-link"
+                       th:href="@{/offers(size=${offers.getSize()}, page=${item.index}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}"
+                       th:text="${item.index}"></a>
+                </li>
+                <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!posts.paging.isNextEnabled()? 'disabled' : ''}">
+                <!--            <a class="page-link" th:href="@{'/?pageNumber=' + ${posts.paging.pageNumber + 1}}">Next</a>-->
+                <a class="page-link"
+                   th:href="@{/offers(size=${offers.getSize()}, page=${posts.paging.pageNumber + 1}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
-<!--<a class="me-3 py-2 text-dark text-decoration-none" href="/offers/add">Add offer</a>-->
-<!--<form th:action="@{/logout}" method="post">-->
-<!--    <input type="submit" value="Sign Out"/>-->
-<!--</form>-->
 </body>
 
 </html>

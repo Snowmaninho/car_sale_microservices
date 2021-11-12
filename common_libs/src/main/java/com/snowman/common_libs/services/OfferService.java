@@ -3,7 +3,9 @@ package com.snowman.common_libs.services;
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.domain.Offer;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 
 public interface OfferService {
@@ -22,4 +24,5 @@ public interface OfferService {
                                    Integer carMinHp, Integer carMaxHpm, Pageable pageable);
 
     void saveOffer(Offer offer);
+
 }

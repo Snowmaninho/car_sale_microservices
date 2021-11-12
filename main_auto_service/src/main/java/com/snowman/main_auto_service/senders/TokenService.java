@@ -39,7 +39,23 @@ public class TokenService {
 
     public String resolveToken(ServletRequest req) {
         Cookie[] cookies = ((HttpServletRequest) req).getCookies();
-        String token = (String) template.convertSendAndReceive(RabbitConfig.TOKEN_EXCHANGE, RabbitConfig.RESOLVE_TOKEN_ROUTING_KEY, cookies);
+
+        if( cookies == null || cookies.length < 1 ) {
+            return null;
+        }
+
+        Cookie sessionCookie = null;
+        for( Cookie cookie : cookies ) {
+            if( ( "JwtAuthTokenInCookie" ).equals( cookie.getName() ) ) {
+                sessionCookie = cookie;
+                break;
+            }
+        }
+
+        if (sessionCookie == null) return null;
+
+
+        String token = (String) template.convertSendAndReceive(RabbitConfig.TOKEN_EXCHANGE, RabbitConfig.RESOLVE_TOKEN_ROUTING_KEY, sessionCookie);
         return token;
     }
 }
