@@ -1,11 +1,9 @@
-package com.snowman.main_auto_service.dto;
+package com.snowman.main_auto_service.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-//@NoArgsConstructor
 @AllArgsConstructor
 public class FilterFormDTO {
 

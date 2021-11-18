@@ -25,35 +25,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser register(AppUser appUser) {
+    public AppUser registerUser(AppUser appUser) {
 
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-
         appUser.setStatus(Status.ACTIVE);
-
         AppUser registeredAppUser = userRepo.save(appUser);
-
-        log.info("IN register - user: {} successfully registered", registeredAppUser);
+        log.info("IN registerUser - user: {} successfully registered", registeredAppUser);
 
         return registeredAppUser;
     }
 
     @Override
-    public List<AppUser> getAll() {
+    public List<AppUser> getAllUsers() {
         List<AppUser> result = userRepo.findAll();
-        log.info("IN getAll - {} users found", result.size());
+        log.info("IN getAllUsers - {} users found", result.size());
         return result;
     }
 
     @Override
-    public AppUser findByUsername(String username) {
+    public AppUser findUserByUsername(String username) {
         AppUser result = userRepo.findByUsername(username);
-        log.info("IN findByUsername - user: {} found by username: {}", result, username);
+        if (result != null) {
+            log.info("IN findUserByUsername - user: {} found by username: {}", result, username);
+        } else {
+            log.warn("User with username: {} not found", username);
+        }
         return result;
     }
 
     @Override
-    public AppUser findById(Long id) {
+    public AppUser findUserByEmail(String email) {
+        AppUser result = userRepo.findByEmail(email);
+        log.info("IN findUserByEmail - user: {} found by email: {}", result, email);
+        return result;
+    }
+
+    @Override
+    public AppUser findUserById(Long id) {
         AppUser result = userRepo.findById(id).orElse(null);
 
         if (result == null) {
@@ -67,12 +75,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser createUser(String username, String firstName, String lastname, String email, String password) {
-        return new AppUser(username, firstName, lastname, email, password);
+        AppUser result = new AppUser(username, firstName, lastname, email, password);
+        log.info("IN createUser - user: {} created with id: {}", result, result.getId());
+        return result;
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         userRepo.deleteById(id);
-        log.info("IN delete - user with id: {} successfully deleted", id);
+        log.info("IN deleteUser - user with id: {} successfully deleted", id);
     }
 }

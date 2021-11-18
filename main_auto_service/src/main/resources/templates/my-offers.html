@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+
+<head>
+    <title>User offers</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<div th:insert="fragments/navbar :: navbar"></div>
+
+<div class="container mt-1">
+    <div class="d-flex bd-highlight mb-1" th:with="authName = ${#authentication.getName()}">
+        <div class="bd-highlight" th:with="equals = ${authName} == ${authorName}">
+            <h3 th:text="${equals} ?  'My offers' : ${authorName} + ' offers'"></h3>
+        </div>
+        <div th:if="${authName} == ${authorName}" class="ms-auto bd-highlight">
+            <a class="btn btn-success" href="/offers/add">Add offer</a>
+        </div>
+    </div>
+    <div th:each="element : ${offers}" class="alert alert-info">
+        <div class="d-flex flex-column bd-highlight">
+            <div class="d-flex bd-highlight">
+                <h3 th:text="${element.getAnonsName()}"></h3>
+                <div class="ms-auto bd-highlight"><a class="btn btn-primary" th:href="'/offers/' + ${element.getId()}">Details</a>
+                </div>
+            </div>
+            <p class="bd-highlight"
+               th:text="${element.getCar().getCarMake()} + ' ' + ${element.getCar().getCarModel() + ' ' + element.getCar().getCarYear() + ' y. ' + element.getCar().getCarPower() + ' hp. ' + element.getCar().getCarPrice() + ' rub.'}"></p>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation" class="paging" th:with="thisAuthor = ${authorName}">
+        <ul class="pagination" th:if="${posts.page.totalPages > 1}">
+            <li class="page-item" th:classappend="${!posts.paging.isPrevEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/offers/userOffers/' + ${thisAuthor}(size=${offers.getSize()}, page=${posts.paging.pageNumber - 1})}"
+                   tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="item : ${posts.paging.getItems()}">
+                <li class="page-item" th:classappend="${item.index == posts.paging.pageNumber? 'active' : ''}"
+                    th:if="${item.pageItemType.name() == 'PAGE'}">
+                    <a class="page-link"
+                       th:href="@{'/offers/userOffers/' + ${thisAuthor}(size=${offers.getSize()}, page=${item.index})}"
+                       th:text="${item.index}"></a>
+                </li>
+                <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!posts.paging.isNextEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/offers/userOffers/' + ${thisAuthor}(size=${offers.getSize()}, page=${posts.paging.pageNumber + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

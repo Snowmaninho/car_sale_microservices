@@ -55,9 +55,10 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
+
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-        return auth;
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return authentication;
     }
 
     public String getUsername(String token) {
@@ -67,8 +68,10 @@ public class JwtTokenProvider {
     public String resolveToken(Cookie cookie) {
 
             String bearerToken = cookie.getValue();
-            if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-                return bearerToken.substring(7, bearerToken.length());
+            if (bearerToken != null) {
+                if (bearerToken.startsWith("Bearer_")) {
+                    return bearerToken.substring(7, bearerToken.length());
+                }
             }
 
         return null;
@@ -76,19 +79,19 @@ public class JwtTokenProvider {
 
     // используем Claims, класс реализованный в библиотеке JsonWebToken
     // для шифрования и дешифровки токена необходим "секрет" - прописывается в application.properties
-    public boolean validateToken(String token) {
+    public Boolean validateToken(String token) {
+
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             // Если expiration < сегодняшней даты = токен не валиден
             if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
+                return Boolean.FALSE;
             }
 
-            return true;
+            return Boolean.TRUE;
         } catch (JwtException | IllegalArgumentException e) {
-//            throw new JwtAuthenticationException("JWT token is expired or invalid");
+            return Boolean.FALSE;
         }
-        return false;
     }
 
     private List<String> getRoleNames(String userRoles) {

@@ -6,15 +6,16 @@ import java.util.List;
 
 public interface UserService {
 
-    AppUser register(AppUser appUser);
+    AppUser registerUser(AppUser appUser);
 
-    List<AppUser> getAll();
+    List<AppUser> getAllUsers();
 
-    AppUser findByUsername(String username);
+    AppUser findUserByUsername(String username);
+    AppUser findUserByEmail(String email);
 
-    AppUser findById(Long id);
+    AppUser findUserById(Long id);
 
     AppUser createUser(String username, String firstName, String lastname, String email, String password);
 
-    void delete(Long id);
+    void deleteUser(Long id);
 }

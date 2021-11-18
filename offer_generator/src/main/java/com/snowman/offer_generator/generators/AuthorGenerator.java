@@ -19,7 +19,8 @@ public class AuthorGenerator {
 
     public List<String> createAuthorsList() {
         return Arrays.asList("Tom", "Jerry", "Emily", "Michael", "Andrew", "Sarah", "Elizabeth", "David", "Alexander",
-                "James", "Victoria", "Jessica", "Jennifer", "John", "Kevin", "Jack", "Luke", "Kyle", "Alex");
+                "James", "Victoria", "Jessica", "Jennifer", "John", "Kevin", "Jack", "Luke", "Kyle", "Alex", "Anthony",
+                "Ashley", "Carl", "Clinton", "Derek", "Donald", "Douglas", "Felix", "Gareth", "Valentine", "Sylvester");
     }
 
     public String getRandomAuthor() {

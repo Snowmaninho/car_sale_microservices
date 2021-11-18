@@ -2,22 +2,25 @@ package com.snowman.main_auto_service.controllers;
 
 import com.snowman.common_libs.domain.Offer;
 import com.snowman.common_libs.services.OfferService;
-import com.snowman.main_auto_service.dto.FilterFormDTO;
-
+import com.snowman.main_auto_service.entity.dto.FilterFormDTO;
+import com.snowman.main_auto_service.entity.dto.OfferDTO;
 import com.snowman.main_auto_service.entity.paging.Paged;
 import com.snowman.main_auto_service.entity.paging.Paging;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +29,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@Slf4j
 @RequestMapping("/offers")
 public class OffersController {
 
-    private OfferService offerService;
+    private final OfferService offerService;
 
     @Autowired
     public OffersController(OfferService offerService) {
@@ -37,21 +41,28 @@ public class OffersController {
     }
 
     @GetMapping
-    public String showAllOffers(@RequestParam("make") Optional<String> make, @RequestParam("cModel") Optional<String> cModel, @RequestParam("minYear") Optional<Integer> minYear,
-                                @RequestParam("maxYear") Optional<Integer> maxYear, @RequestParam("minPrice") Optional<Integer> minPrice, @RequestParam("maxPrice") Optional<Integer> maxPrice,
-                                @RequestParam("minHp") Optional<Integer> minHp, @RequestParam("maxHp") Optional<Integer> maxHp,
-                                @RequestParam("page") Optional<Integer> page,@RequestParam("size") Optional<Integer> size,
+    public String showAllOffers(@RequestParam("make") Optional<String> make,
+                                @RequestParam("cModel") Optional<String> cModel,
+                                @RequestParam("minYear") Optional<Integer> minYear,
+                                @RequestParam("maxYear") Optional<Integer> maxYear,
+                                @RequestParam("minPrice") Optional<Integer> minPrice,
+                                @RequestParam("maxPrice") Optional<Integer> maxPrice,
+                                @RequestParam("minHp") Optional<Integer> minHp,
+                                @RequestParam("maxHp") Optional<Integer> maxHp,
+                                @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("size") Optional<Integer> size,
                                 Model model) {
+
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        FilterFormDTO filterForm = new FilterFormDTO(make.orElse(""), cModel.orElse(""), minYear.orElse(null), maxYear.orElse(null),
-                minPrice.orElse(null), maxPrice.orElse(null), minHp.orElse(null), maxHp.orElse(null));
+        FilterFormDTO filterForm = new FilterFormDTO(make.orElse(""), cModel.orElse(""),
+                minYear.orElse(null), maxYear.orElse(null), minPrice.orElse(null),
+                maxPrice.orElse(null), minHp.orElse(null), maxHp.orElse(null));
 
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
         Page<Offer> offers = findFilteredOffers(filterForm, pageable);
         addParamsToModel(filterForm, offers, model);
-
 
         model.addAttribute("posts", getPage(filterForm, pageable, currentPage, pageSize));
 
@@ -59,7 +70,8 @@ public class OffersController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String showFilteredOffers(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
+    public String showFilteredOffers(@RequestParam("page") Optional<Integer> page,
+                                     @RequestParam("size") Optional<Integer> size,
                                      FilterFormDTO filterForm, RedirectAttributes redirectAttributes) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
@@ -70,17 +82,55 @@ public class OffersController {
     }
 
     @GetMapping("/add")
-    public String addNewOffer() {
+    public String addNewOffer(OfferDTO offerDTO, Model model) {
         return "add-offer";
     }
 
     @PostMapping("/add")
-    public String addNewOffer(@RequestParam String title, @RequestParam String anonsName, @RequestParam String carMake,
-                              @RequestParam String carModel, @RequestParam int carYear, @RequestParam int carPower,
-                              @RequestParam int carPrice, @RequestParam String offerText, Authentication auth) {
-        Offer offer = offerService.createOffer(title, anonsName, auth.getName(), carMake, carModel, carYear, carPower, carPrice, offerText);
-        offerService.saveOffer(offer);
+    public String addNewOffer(@Valid OfferDTO offerDTO, BindingResult bindingResult, Model model,
+                              Authentication authentication) {
+
+        if (bindingResult.hasErrors()) {
+            return "add-offer";
+        }
+
+        Offer result = offerService.createOffer(offerDTO.getTitle(), offerDTO.getAnonsName(), authentication.getName(),
+                offerDTO.getCarMake(), offerDTO.getCarModel(), offerDTO.getCarYear(), offerDTO.getCarPower(),
+                offerDTO.getCarPrice(), offerDTO.getOfferText());
+
+        offerService.saveOffer(result);
+
+/*        log.info("Added offer: Author - " + result.getAuthorName() + ", Anons name - " + result.getAnonsName()
+                + ", Car make - " + result.getCar().getCarMake() + ", Car model - " + result.getCar().getCarModel()
+                + ", Car Year - " + result.getCar().getCarYear() + ", Car Power - " + result.getCar().getCarPower()
+                + ", Car Price - " + result.getCar().getCarPrice());*/
+
         return "redirect:/offers";
+    }
+
+    @GetMapping("/{offerId}")
+    public String offerDetails (@PathVariable Long offerId, Model model) {
+        Offer offer = offerService.findOfferById(offerId);
+        model.addAttribute("offer", offer);
+
+        return "offer-details";
+    }
+
+    @GetMapping("/userOffers/{author}")
+    public String myOffers (@PathVariable String author, @RequestParam("page") Optional<Integer> page,
+                            @RequestParam("size") Optional<Integer> size, Model model) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+
+        Page<Offer> offers = offerService.findOffersByAuthorName(author, pageable);
+
+        model.addAttribute("authorName", author);
+        model.addAttribute("offers", offers);
+        model.addAttribute("posts", getPage(offers, currentPage, pageSize));
+
+        return "my-offers";
     }
 
 
@@ -103,7 +153,8 @@ public class OffersController {
         }
     }
 
-    public void addParamsToPath(FilterFormDTO filterForm, int currentPage, int pageSize, RedirectAttributes redirectAttributes) {
+    public void addParamsToPath(FilterFormDTO filterForm, int currentPage, int pageSize,
+                                RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("page", currentPage);
         redirectAttributes.addAttribute("size", pageSize);
         redirectAttributes.addAllAttributes(addAttributes(filterForm));
@@ -124,6 +175,10 @@ public class OffersController {
 
     public Paged<Offer> getPage(FilterFormDTO filterForm, Pageable pageable, int pageNumber, int size) {
         Page<Offer> offerPage = findFilteredOffers(filterForm, pageable);
+        return new Paged<>(offerPage, Paging.of(offerPage.getTotalPages(), pageNumber, size));
+    }
+
+    public Paged<Offer> getPage(Page<Offer> offerPage, int pageNumber, int size) {
         return new Paged<>(offerPage, Paging.of(offerPage.getTotalPages(), pageNumber, size));
     }
 }

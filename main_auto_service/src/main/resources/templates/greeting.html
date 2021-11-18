@@ -13,12 +13,12 @@
 <div sec:authorize="isAnonymous()">
     <h1>Welcome to the website dedicated to car sales.</h1>
     <h1>You need to logIn to see the posted offers.</h1>
-    <p>Click <a class="btn btn-success gx-5" href="/login">here</a> to logIn</p>
+    <p>Click <a class="btn btn-success gx-5" th:href="@{/log}">here</a> to logIn</p>
 </div>
 <div sec:authorize="isAuthenticated()">
     <h1>Welcome to the website dedicated to car sales, dear <span
             sec:authentication="name"></span></h1>
-    <p>Click <a class="btn btn-primary gx-5" href="/offers">here</a> to see all offers</p>
+    <p>Click <a class="btn btn-primary gx-5" th:href="@{/offers}">here</a> to see all offers</p>
 </div>
 
 

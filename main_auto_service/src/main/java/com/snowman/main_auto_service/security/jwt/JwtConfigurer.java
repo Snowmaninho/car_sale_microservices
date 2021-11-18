@@ -10,8 +10,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 // конфигуратор для Jwt Securuty
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private UserService userService;
-    private TokenService tokenService;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     public JwtConfigurer(UserService userService, TokenService tokenService) {
 

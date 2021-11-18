@@ -1,6 +1,7 @@
 package com.snowman.common_libs.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
 public class AppUser {
 
     @Id
@@ -57,8 +59,5 @@ public class AppUser {
         this.updated = now;
         this.status = Status.NOT_ACTIVE;
         this.role = "ROLE_USER";
-    }
-
-    public AppUser() {
     }
 }

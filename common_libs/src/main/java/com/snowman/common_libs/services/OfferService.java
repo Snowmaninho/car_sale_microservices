@@ -10,13 +10,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface OfferService {
     Offer createOffer(String title, String anonsName, String authorName, String carMark, String carModel,
-                      int carYear, int carPower, int carPrice, String offerText);
+                      Integer carYear, Integer carPower, Integer carPrice, String offerText);
 
     Offer createOffer(String title, String anonsName, String authorName, Car car, String offerText);
 
-//    Iterable<Offer> findAll();
-//    Iterable<Offer> findAll(Pageable pageable);
-    Page<Offer> findAll(Pageable pageable);
+    Page<Offer> findAllOffers(Pageable pageable);
 
     Page<Offer> findFilteredOffers(String carMake, String carModel,
                                    Integer carMinYear, Integer carMaxYear,
@@ -25,4 +23,6 @@ public interface OfferService {
 
     void saveOffer(Offer offer);
 
+    Offer findOfferById(Long id);
+    Page<Offer> findOffersByAuthorName(String author, Pageable pageable);
 }

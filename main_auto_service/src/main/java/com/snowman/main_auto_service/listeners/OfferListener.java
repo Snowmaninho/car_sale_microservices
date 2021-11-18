@@ -14,7 +14,7 @@ import java.util.List;
 @EnableRabbit
 public class OfferListener {
 
-    private OfferService offerService;
+    private final OfferService offerService;
 
     @Autowired
     public OfferListener(OfferService offerService) {

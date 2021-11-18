@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+
+<head>
+    <title>Offers details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<div th:insert="fragments/navbar :: navbar"></div>
+
+<div class="alert alert-info">
+    <table>
+        <tr>
+            <td><h2>Title: </h2></td>
+            <td><h2 th:text="${offer.getTitle()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Make: </h2></td>
+            <td><h2 th:text="${offer.getCar().getCarMake()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Model: </h2></td>
+            <td><h2 th:text="${offer.getCar().getCarModel()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Year: </h2></td>
+            <td><h2 th:text="${offer.getCar().getCarYear()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Power (HP): </h2></td>
+            <td><h2 th:text="${offer.getCar().getCarPower()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Price: </h2></td>
+            <td><h2 th:text="${offer.getCar().getCarPrice()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Description: </h2></td>
+            <td><h2 th:text="${offer.getOfferText()}"></h2></td>
+        </tr>
+        <tr>
+            <td><h2>Сar owner: </h2></td>
+            <td><a th:href="@{'/offers/userOffers/' + ${offer.getAuthorName()}}">
+                <h2 th:text="${offer.getAuthorName()}"></h2>
+            </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

@@ -20,13 +20,16 @@
                     <a sec:authorize="isAnonymous()" th:class="'nav-link disabled'" href="#" tabindex="-1"
                        aria-disabled="true">Offers</a>
                 </li>
+                <li th:with="myPath = '/offers/userOffers/' + ${#authentication.getName()}" sec:authorize="isAuthenticated()">
+                    <a th:class="${#strings.equals(currentPage, myPath) or #strings.equals(currentPage, '/offers/add')} ? 'active nav-link' : 'nav-link'" th:href="@{'/offers/userOffers/' + ${#authentication.getName()}}">My offers</a>
+                </li>
             </ul>
             <form class="d-flex">
                 <div class="navbar-text mr-3" sec:authorize="isAuthenticated()">Welcome, <span
                         sec:authentication="name"></span></div>
-                <div sec:authorize="isAuthenticated()"><a class="btn btn-warning gx-5" href="/logout" role="button">LogOut</a>
+                <div sec:authorize="isAuthenticated()"><a class="btn btn-warning gx-5" th:href="@{/out}" role="button" >LogOut</a>
                 </div>
-                <div sec:authorize="isAnonymous()"><a class="btn btn-success gx-5" href="/login">LogIn</a></div>
+                <div sec:authorize="isAnonymous()"><a class="btn btn-success gx-5" th:href="@{/log}">LogIn</a></div>
             </form>
         </div>
     </div>

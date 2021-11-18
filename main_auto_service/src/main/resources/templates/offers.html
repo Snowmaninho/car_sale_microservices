@@ -2,24 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<!--<style>
-    .myPagination {
-        display: inline-block;
-    }
-
-    .myPagination a {
-        color: black;
-        float: left;
-        padding: 5px 5px;
-        text-decoration: none;
-    }
-
-    .myPagination a.active {
-        background-color: gray;
-        color: white;
-        border-radius: 2px;
-    }
-</style>-->
 
 <head>
     <title>Sale offers</title>
@@ -35,24 +17,20 @@
         <tr>
             <td>Car make:</td>
             <td><input type="text" name="carMake"/></td>
-            <td>Car model:</td>
-            <td><input type="text" name="carModel"/></td>
-        </tr>
-        <tr>
+            <td>Car min price (rub):</td>
+            <td><input type="text" name="carMinPrice"/></td>
             <td>Car min year:</td>
             <td><input type="text" name="carMinYear"/></td>
-            <td>Car max year:</td>
-            <td><input type="text" name="carMaxYear"/></td>
-        </tr>
-        <tr>
-            <td>Car min price:</td>
-            <td><input type="text" name="carMinPrice"/></td>
-            <td>Car max price:</td>
-            <td><input type="text" name="carMaxPrice"/></td>
-        </tr>
-        <tr>
             <td>Car min HP:</td>
             <td><input type="text" name="carMinHp"/></td>
+        </tr>
+        <tr>
+            <td>Car model:</td>
+            <td><input type="text" name="carModel"/></td>
+            <td>Car max price (rub):</td>
+            <td><input type="text" name="carMaxPrice"/></td>
+            <td>Car max year:</td>
+            <td><input type="text" name="carMaxYear"/></td>
             <td>Car max HP:</td>
             <td><input type="text" name="carMaxHp"/></td>
         </tr>
@@ -63,17 +41,24 @@
 </form>
 
 <div class="container mt-1">
-    <h3>All offers</h3>
-    <div th:each="element : ${offers}" class="alert alert-info mt-1">
-        <h3 th:text="${element.getAnonsName()}"></h3>
-        <p th:text="${element.getCar().getCarMake()} + ' ' + ${element.getCar().getCarModel() + ' ' + element.getCar().getCarYear() + ' y. ' + element.getCar().getCarPower() + ' hp. ' + element.getCar().getCarPrice() + ' rub.'}"></p>
-        <!--        <a th:href="'/offers/' + ${element.getId()}" class="btn btn-warning">Details</a>-->
+    <div class="d-flex bd-highlight mb-1">
+        <div class="bd-highlight"><h3>All offers</h3></div>
+        <div class="ms-auto bd-highlight"><a class="btn btn-success" href="/offers/add">Add offer</a></div>
+    </div>
+    <div th:each="element : ${offers}" class="alert alert-info">
+        <div class="d-flex flex-column bd-highlight">
+            <div class="d-flex bd-highlight">
+                <h3 th:text="${element.getAnonsName()}"></h3>
+                <div class="ms-auto bd-highlight"><a class="btn btn-primary" th:href="'/offers/' + ${element.getId()}">Details</a></div>
+            </div>
+            <p class="bd-highlight"
+               th:text="${element.getCar().getCarMake()} + ' ' + ${element.getCar().getCarModel() + ' ' + element.getCar().getCarYear() + ' y. ' + element.getCar().getCarPower() + ' hp. ' + element.getCar().getCarPrice() + ' rub.'}"></p>
+        </div>
     </div>
 
     <nav aria-label="Page navigation" class="paging">
         <ul class="pagination" th:if="${posts.page.totalPages > 1}">
             <li class="page-item" th:classappend="${!posts.paging.isPrevEnabled()? 'disabled' : ''}">
-                <!--            <a class="page-link" th:href="@{'/?pageNumber=' + ${posts.paging.pageNumber - 1}}"-->
                 <a class="page-link"
                    th:href="@{/offers(size=${offers.getSize()}, page=${posts.paging.pageNumber - 1}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}"
                    tabindex="-1">Previous</a>
@@ -81,7 +66,6 @@
             <th:block th:each="item : ${posts.paging.getItems()}">
                 <li class="page-item" th:classappend="${item.index == posts.paging.pageNumber? 'active' : ''}"
                     th:if="${item.pageItemType.name() == 'PAGE'}">
-                    <!--                <a class="page-link" th:href="@{'/?pageNumber=' + ${item.index}}"-->
                     <a class="page-link"
                        th:href="@{/offers(size=${offers.getSize()}, page=${item.index}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}"
                        th:text="${item.index}"></a>
@@ -91,7 +75,6 @@
                 </li>
             </th:block>
             <li class="page-item" th:classappend="${!posts.paging.isNextEnabled()? 'disabled' : ''}">
-                <!--            <a class="page-link" th:href="@{'/?pageNumber=' + ${posts.paging.pageNumber + 1}}">Next</a>-->
                 <a class="page-link"
                    th:href="@{/offers(size=${offers.getSize()}, page=${posts.paging.pageNumber + 1}, make=${make}, cModel=${cModel}, minYear=${minYear}, maxYear=${maxYear}, minPrice=${minPrice}, maxPrice=${maxPrice}, minHp=${minHp}, maxHp=${maxHp})}">Next</a>
             </li>
@@ -99,5 +82,4 @@
     </nav>
 </div>
 </body>
-
 </html>

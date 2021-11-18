@@ -3,12 +3,14 @@ package com.snowman.offer_generator.generators;
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.services.CarService;
 import com.snowman.common_libs.services.impl.CarServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
+@Slf4j
 public class CarGenerator {
 
     private Map<String, List<String>> makeAndModels;
@@ -100,7 +102,8 @@ public class CarGenerator {
 
     public Car getRandomCar() {
         String carMake = getRandomMake();
-
-        return carService.createCar(carMake, getRandomModel(carMake), getRandomYear(), getRandomPower(), getRandomPrice());
+        Car result = carService.createCar(carMake, getRandomModel(carMake), getRandomYear(), getRandomPower(), getRandomPrice());
+        log.info("In getRandomCar - Created car: " + result.toString());
+        return result;
     }
 }
