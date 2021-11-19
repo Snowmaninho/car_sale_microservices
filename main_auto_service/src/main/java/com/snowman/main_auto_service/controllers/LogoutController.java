@@ -21,6 +21,7 @@ public class LogoutController {
 
         SecurityContextHolder.clearContext();
 
+        // clean up our token cookie
         Cookie responseCookie = new Cookie("JwtAuthTokenInCookie", null);
         responseCookie.setMaxAge(0);
         responseCookie.setSecure(true);

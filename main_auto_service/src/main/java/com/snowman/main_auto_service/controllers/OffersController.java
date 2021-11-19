@@ -79,6 +79,7 @@ public class OffersController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
+        // take params from Filter Form and add them to the path with redirect
         addParamsToPath(filterForm, currentPage, pageSize, redirectAttributes);
 
         return "redirect:/offers";
