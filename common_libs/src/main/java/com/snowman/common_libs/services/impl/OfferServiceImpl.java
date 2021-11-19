@@ -1,6 +1,5 @@
 package com.snowman.common_libs.services.impl;
 
-import com.snowman.common_libs.domain.AppUser;
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.domain.Offer;
 import com.snowman.common_libs.repos.OfferRepo;

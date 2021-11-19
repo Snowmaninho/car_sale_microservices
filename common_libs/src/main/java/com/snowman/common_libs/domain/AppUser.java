@@ -57,7 +57,7 @@ public class AppUser {
         this.password = password;
         this.created = now;
         this.updated = now;
-        this.status = Status.NOT_ACTIVE;
-        this.role = "ROLE_USER";
+        this.status = Status.NOT_ACTIVE; // not active from start
+        this.role = "ROLE_USER"; // standard role for all created users
     }
 }

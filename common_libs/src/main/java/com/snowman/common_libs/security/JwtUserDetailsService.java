@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
+// Custom implementation of UserDetailsService
 @Service
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
@@ -21,7 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         this.userService = userService;
     }
 
-    // Поиск User'а в базе и конвертация его в UserDetails пользователя
+    // Search for a User in the database and convert it into "UserDetails user"
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userService.findUserByUsername(username);

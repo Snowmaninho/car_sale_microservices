@@ -39,16 +39,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .csrf().disable() // защита от взлома, отключаем для простоты
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // создавать сессию на каждого юзера. Не создаём. Каждый запрос является новым.
+                .csrf().disable() // hack protection, disable for simplicity
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // create a session for each user. We do not create. Every request is new
                 .and()
                 .authorizeRequests() // авторизация запроса
-                .antMatchers(HOME_ENDPOINT, LOGIN_ENDPOINT, REGISTRATION_ENDPOINT, ACCESS_DENIED_ENDPOINT).permitAll() // такой паттерн - разрешен доступ на все урлы, без аутентификации
-                .anyRequest().authenticated() // все остальные запросы должны быть аутентифицированы (либо админом, либо любой другой ролью - сначала нужно LogIn, иначе не пустит)
+                .antMatchers(HOME_ENDPOINT, LOGIN_ENDPOINT, REGISTRATION_ENDPOINT, ACCESS_DENIED_ENDPOINT).permitAll() // such a pattern - access to all URLs is allowed, without authentication
+                .anyRequest().authenticated() // all other requests must be authenticated (either by the admin or by any other role - first you need LogIn, otherwise it will not be allowed)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()) // intercept 403 error
                 .and()
-                .apply(new JwtConfigurer(userService, tokenService)); // и передаём конфиг в котором проверяем каждый запрос на наличие токена
+                .apply(new JwtConfigurer(userService, tokenService)); // and pass the config in which we check each request for the presence of a token
     }
 
     @Bean

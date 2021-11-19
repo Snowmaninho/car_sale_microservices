@@ -3,7 +3,6 @@ package com.snowman.auth_service.security.jwt;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,16 +17,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-
-// создаём класс для генерации токена
+// create a class for generating a token
 @Component
 public class JwtTokenProvider {
 
     @Value("${jwt.token.secret}")
-    private String secret;
+    private String secret;  // our token secret
 
     @Value("${jwt.token.expired}")
-    private long validityInMilliseconds; // сколько в миллисекундах будет валиден данный токен
+    private long validityInMilliseconds; // how many milliseconds this token will be valid
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -37,9 +35,8 @@ public class JwtTokenProvider {
         Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    // генерируем токен на основе имени пользователя и его ролей
-    public String createToken(String username, String role) { // можно передавать UserDetails и вытаскивать данные из него
-
+    // generate a token based on username and roles
+    public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", getRoleNames(role));
 
@@ -55,7 +52,6 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         return authentication;
@@ -77,13 +73,13 @@ public class JwtTokenProvider {
         return null;
     }
 
-    // используем Claims, класс реализованный в библиотеке JsonWebToken
-    // для шифрования и дешифровки токена необходим "секрет" - прописывается в application.properties
+    // use Claims, a class implemented in the JsonWebToken library
+    // to encrypt and decrypt the token, a "secret" is required - it is written in application.properties
     public Boolean validateToken(String token) {
 
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            // Если expiration < сегодняшней даты = токен не валиден
+            // If expiration < today's date = token is not valid
             if (claims.getBody().getExpiration().before(new Date())) {
                 return Boolean.FALSE;
             }

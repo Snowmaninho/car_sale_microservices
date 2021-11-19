@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// конфигуратор для Jwt Securuty
+// Configurer for Jwt Security
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     private final UserService userService;
@@ -19,10 +19,11 @@ public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
         this.tokenService = tokenService;
     }
 
-    // каждый запрос перед тем как пройти на сервер должен пройти проверку на фильтр. Наш фильтр проверяет на токен
+    // each request must pass a filter check before being sent to the server. Our filter checks for a token
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(userService, tokenService);
-        httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // каждый запрос, который поступает в наше приложение в первую очередь обрабатывает JwtTokenFilter
+        // every request that enters our application is first processed by the JwtTokenFilter
+        httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

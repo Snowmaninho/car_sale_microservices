@@ -2,26 +2,26 @@ package com.snowman.offer_generator.generators;
 
 import com.snowman.common_libs.domain.Car;
 import com.snowman.common_libs.services.CarService;
-import com.snowman.common_libs.services.impl.CarServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+// generate Car
 @Component
 @Slf4j
 public class CarGenerator {
 
-    private Map<String, List<String>> makeAndModels;
-    private Random random;
-    private int yearDiff;
-    private int carMinPrice;
-    private int carMaxPrice;
-    private int carMinPower;
-    private int carMaxPower;
+    private final Map<String, List<String>> makeAndModels;
+    private final Random random;
+    private final int yearDiff;
+    private final int carMinPrice;
+    private final int carMaxPrice;
+    private final int carMinPower;
+    private final int carMaxPower;
 
-    private CarService carService;
+    private final CarService carService;
 
     @Autowired
     public CarGenerator(CarService carService) {

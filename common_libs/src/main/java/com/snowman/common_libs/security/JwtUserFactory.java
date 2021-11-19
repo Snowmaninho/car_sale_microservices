@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Simple factory fo "Jwt user"
 public final class JwtUserFactory {
 
     public JwtUserFactory() {
@@ -24,13 +25,13 @@ public final class JwtUserFactory {
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                mapToGrantedAuthorities(new ArrayList<>(Collections.singletonList(user.getRole()))), // конвертация ролей в GrantedAuthorities
-                user.getStatus().equals(Status.ACTIVE),  // enabled будет только в том случае, если его статус - ACTIVE
-                user.getUpdated() // последний раз обновлённый пароль в последней дате обновления User
+                mapToGrantedAuthorities(new ArrayList<>(Collections.singletonList(user.getRole()))), // converting roles to GrantedAuthorities
+                user.getStatus().equals(Status.ACTIVE),  // enabled will be only if its status is ACTIVE (here we activate user)
+                user.getUpdated() // the last time the password was updated in the last date of the User update
         );
     }
 
-    // метод конвертирующий наши роли в GrantedAuthorities
+    // method converting our roles into GrantedAuthorities
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<String> userRoles) {
         return userRoles.stream()
                 .map(SimpleGrantedAuthority::new

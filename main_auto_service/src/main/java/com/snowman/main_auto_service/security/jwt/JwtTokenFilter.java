@@ -12,15 +12,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
-// будем фильтровать запросы на наличие токена
-
-
+//we will filter requests for token availability
 @Slf4j
 public class JwtTokenFilter extends GenericFilterBean {
 
@@ -33,7 +28,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     }
 
 
-    // каждый запрос который приходит на сервер - валидируется по токену. Нет токена или он не валиден - не будет аутентификации
+    // every request that comes to the server is validated by a token. No token or it is not valid - there will be no authentication
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
@@ -41,6 +36,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         String token = tokenService.resolveToken(req);
         Boolean valid = tokenService.validateToken(token);
 
+        // here we update token if it is ok for current user while he is on our site
         if (token != null && valid) {
             Authentication authentication = tokenService.getAuthentication(token);
 
@@ -48,13 +44,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 String username = authentication.getName();
                 AppUser user = userService.findUserByUsername(username);
 
-                Cookie newCookie = new Cookie("JwtAuthTokenInCookie", "Bearer_" + tokenService.createToken(user.getUsername(), user.getRole()));
-                newCookie.setMaxAge(600);
-                newCookie.setSecure(true);
-                newCookie.setHttpOnly(true);
-                newCookie.setPath("/");
-
-                ((HttpServletResponse) res).addCookie(newCookie);
+                ((HttpServletResponse) res).addCookie(tokenService.tokenCookie(user));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

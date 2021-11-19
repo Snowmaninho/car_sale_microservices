@@ -40,6 +40,7 @@ public class OffersController {
         this.offerService = offerService;
     }
 
+    // show all offers with/without filter
     @GetMapping
     public String showAllOffers(@RequestParam("make") Optional<String> make,
                                 @RequestParam("cModel") Optional<String> cModel,
@@ -56,6 +57,7 @@ public class OffersController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
+        // intercept params from Path and put it to filterForm
         FilterFormDTO filterForm = new FilterFormDTO(make.orElse(""), cModel.orElse(""),
                 minYear.orElse(null), maxYear.orElse(null), minPrice.orElse(null),
                 maxPrice.orElse(null), minHp.orElse(null), maxHp.orElse(null));
@@ -69,6 +71,7 @@ public class OffersController {
         return "offers";
     }
 
+    // add filter params to Path and redirect with them
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String showFilteredOffers(@RequestParam("page") Optional<Integer> page,
                                      @RequestParam("size") Optional<Integer> size,
@@ -86,6 +89,7 @@ public class OffersController {
         return "add-offer";
     }
 
+    // creating new offer for current user
     @PostMapping("/add")
     public String addNewOffer(@Valid OfferDTO offerDTO, BindingResult bindingResult, Model model,
                               Authentication authentication) {
@@ -99,15 +103,10 @@ public class OffersController {
                 offerDTO.getCarPrice(), offerDTO.getOfferText());
 
         offerService.saveOffer(result);
-
-/*        log.info("Added offer: Author - " + result.getAuthorName() + ", Anons name - " + result.getAnonsName()
-                + ", Car make - " + result.getCar().getCarMake() + ", Car model - " + result.getCar().getCarModel()
-                + ", Car Year - " + result.getCar().getCarYear() + ", Car Power - " + result.getCar().getCarPower()
-                + ", Car Price - " + result.getCar().getCarPrice());*/
-
         return "redirect:/offers";
     }
 
+    // details of offer
     @GetMapping("/{offerId}")
     public String offerDetails (@PathVariable Long offerId, Model model) {
         Offer offer = offerService.findOfferById(offerId);
@@ -116,6 +115,7 @@ public class OffersController {
         return "offer-details";
     }
 
+    // user offers
     @GetMapping("/userOffers/{author}")
     public String myOffers (@PathVariable String author, @RequestParam("page") Optional<Integer> page,
                             @RequestParam("size") Optional<Integer> size, Model model) {

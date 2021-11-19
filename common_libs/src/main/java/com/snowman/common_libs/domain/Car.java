@@ -2,6 +2,7 @@ package com.snowman.common_libs.domain;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "cars")
 @Accessors(chain = true)
 public class Car implements Serializable {
@@ -22,6 +24,4 @@ public class Car implements Serializable {
     private int carPrice;
     private int carPower;
 
-    public Car() {
-    }
 }

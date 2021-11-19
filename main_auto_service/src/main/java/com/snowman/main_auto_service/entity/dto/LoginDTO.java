@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+// DTO for "login" page
 @Data
 @NoArgsConstructor
 public class LoginDTO {

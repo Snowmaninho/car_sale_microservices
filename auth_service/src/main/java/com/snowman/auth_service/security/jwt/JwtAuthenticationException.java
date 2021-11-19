@@ -1,3 +1,4 @@
+/*
 package com.snowman.auth_service.security.jwt;
 
 import org.springframework.security.core.AuthenticationException;
@@ -12,3 +13,4 @@ public class JwtAuthenticationException extends AuthenticationException {
         super(msg);
     }
 }
+*/

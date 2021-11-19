@@ -7,13 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// generate Offer
 @Component
 @Slf4j
 public class OfferGenerator {
 
-    private CarGenerator carGenerator;
-    private AuthorGenerator authorGenerator;
-    private OfferService offerService;
+    private final CarGenerator carGenerator;
+    private final AuthorGenerator authorGenerator;
+    private final OfferService offerService;
 
     @Autowired
     public OfferGenerator(CarGenerator carGenerator, AuthorGenerator authorGenerator, OfferService offerService) {

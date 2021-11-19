@@ -21,8 +21,9 @@ public class OfferListener {
         this.offerService = offerService;
     }
 
+    // accept offers from other microservice and save it
     @RabbitListener(queues = RabbitConfig.OFFER_QUEUE)
     public void offerListener(List<Offer> offers) {
-        offers.forEach(offer -> offerService.saveOffer(offer));
+        offers.forEach(offerService::saveOffer);
     }
 }

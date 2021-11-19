@@ -16,14 +16,15 @@ import java.util.Random;
 @Service
 public class OfferSender {
 
-    private Random random;
-    private int minOffers;
-    private int maxOffers;
+    private final Random random;
+    private final int minOffers;
+    private final int maxOffers;
     private int offerListSize;
     private ArrayList<Offer> offers;
-    private static final int FIXED_DELAY = 10000; // 10 sec
-    private RabbitTemplate template;
-    private OfferGenerator offerGenerator;
+
+    private static final int FIXED_DELAY = 10000; // create one offer every 10 sec
+    private final RabbitTemplate template;
+    private final OfferGenerator offerGenerator;
 
     {
         random = new Random();

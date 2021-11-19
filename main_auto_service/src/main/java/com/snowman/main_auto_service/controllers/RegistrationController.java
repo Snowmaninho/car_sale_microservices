@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+// registration page
 @Controller
 public class RegistrationController {
 
@@ -34,6 +35,7 @@ public class RegistrationController {
 
         AppUser appUserFromDb = userService.findUserByUsername(registrationFormDTO.getUsername());
 
+        // check for user existing
         if (appUserFromDb != null) {
             model.addAttribute("message", "User exists!");
             return "registration";
@@ -41,11 +43,13 @@ public class RegistrationController {
 
         appUserFromDb = userService.findUserByEmail(registrationFormDTO.getEmail());
 
+        // check for email existing
         if (appUserFromDb != null) {
             model.addAttribute("message", "This email is already taken!");
             return "registration";
         }
 
+        // check for passwords match
         if (!registrationFormDTO.getPassword().equals(registrationFormDTO.getConfirmPassword())) {
             model.addAttribute("message", "Password does not match the confirm password!");
             return "registration";

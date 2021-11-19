@@ -1,12 +1,15 @@
 package com.snowman.offer_generator.generators;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+// generate author
 @Component
+@Slf4j
 public class AuthorGenerator {
 
     private List<String> authors;
@@ -23,7 +26,10 @@ public class AuthorGenerator {
                 "Ashley", "Carl", "Clinton", "Derek", "Donald", "Douglas", "Felix", "Gareth", "Valentine", "Sylvester");
     }
 
+    // take random author from list
     public String getRandomAuthor() {
-        return authors.get(random.nextInt(authors.size()));
+        String result = authors.get(random.nextInt(authors.size()));
+        log.info("IN getRandomAuthor - created author: " + result);
+        return result;
     }
 }

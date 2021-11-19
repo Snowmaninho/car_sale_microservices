@@ -15,11 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+// login page
 @Slf4j
 @Controller
 @RequestMapping("/log")
@@ -40,6 +39,7 @@ public class LoginController {
     @GetMapping
     public String login(LoginDTO loginDTO, Model model, Authentication authentication) {
 
+        // if authenticated - redirect to "offers" page
         if (authentication != null) {
             log.info("User already logged: " + authentication.getName());
             return "redirect:/offers";
@@ -55,6 +55,7 @@ public class LoginController {
         }
 
         try {
+            // here check for user and correct password
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
             AppUser user = userService.findUserByUsername(loginDTO.getUsername());
 
@@ -63,16 +64,7 @@ public class LoginController {
                 throw new UsernameNotFoundException("User with username: " + loginDTO.getUsername() + " not found");
             }
 
-            String token = tokenService.createToken(user.getUsername(), user.getRole());
-
-            Cookie sessionCookie = new Cookie("JwtAuthTokenInCookie", "Bearer_" + token);
-            sessionCookie.setMaxAge(600);
-            sessionCookie.setSecure(true);
-            sessionCookie.setHttpOnly(true);
-            sessionCookie.setPath("/");
-
-            response.addCookie(sessionCookie);
-
+            response.addCookie(tokenService.tokenCookie(user));
             log.info("User: " + loginDTO.getUsername() + " successfully login");
 
             return "redirect:/";

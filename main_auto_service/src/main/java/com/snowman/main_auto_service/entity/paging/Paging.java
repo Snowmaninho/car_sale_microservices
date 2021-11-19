@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Paging {
 
+    // how many digits to the right and left of the current page number
     private static final int PAGINATION_STEP = 2;
 
     private boolean nextEnabled;

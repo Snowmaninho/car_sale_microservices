@@ -1,6 +1,7 @@
 package com.snowman.common_libs.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 
 @Component
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "offers")
 @Accessors(chain = true)
@@ -26,7 +28,4 @@ public class Offer implements Serializable {
 
     private String offerText;
 
-
-    public Offer() {
-    }
 }

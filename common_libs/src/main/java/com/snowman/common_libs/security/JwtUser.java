@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-// Делам Jwt юзера, который будет являться юзером с точки зрения Spring Security. Именно с ним будет работать Security
+// We create a "Jwt" user, which will be a user from the point of view of Spring Security. It is with him that Spring Security will work
 public class JwtUser implements UserDetails {
 
     private final Long id;
@@ -18,10 +18,12 @@ public class JwtUser implements UserDetails {
     private final String email;
     private final boolean enabled;
     private final Date lastPasswordResetDate;
-    // будем конвертировать наши роли в GrantedAuthority
+
+    // we will convert our roles to GrantedAuthority
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser(
+    // Big constructor for our "Jwt" user
+    public JwtUser (
             Long id,
             String username,
             String firstName,
