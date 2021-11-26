@@ -2,7 +2,7 @@
 Simple car sale website, based on Spring with some microservices.
 
 Technology stack used:
-Spring Boot, Spring Security, Spring MVC, Spring Data, Lombok, RabbitMQ, JWT, Thymeleaf, Bootstrap 5.
+Maven, Spring Boot, Spring Security, Spring MVC, Spring Data, Lombok, RabbitMQ, JWT, Thymeleaf, Bootstrap 5.
 
 How to run this app? You have to instal RabbitMQ and PostgreSQL.
 Then create database with name: "car_sale_app_db".
