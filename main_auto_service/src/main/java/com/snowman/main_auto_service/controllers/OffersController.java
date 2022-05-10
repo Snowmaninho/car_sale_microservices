@@ -135,6 +135,8 @@ public class OffersController {
     }
 
 
+    // some support methods for OfferController
+
     public Page<Offer> findFilteredOffers(FilterFormDTO filterForm, Pageable pageable) {
         return offerService.findFilteredOffers(filterForm.getCarMake(), filterForm.getCarModel(),
                 filterForm.getCarMinYear(), filterForm.getCarMaxYear(), filterForm.getCarMinPrice(),
