@@ -14,7 +14,7 @@ public class MainAutoServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MainAutoServiceApplication.class, args);
+
         System.out.println("CHECK!!!");
     }
-
 }
