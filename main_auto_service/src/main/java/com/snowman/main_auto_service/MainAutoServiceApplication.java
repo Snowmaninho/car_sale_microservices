@@ -15,6 +15,6 @@ public class MainAutoServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(MainAutoServiceApplication.class, args);
 
-        System.out.println("Another string.");
+        System.out.println("Deleted unnecessary strings");
     }
 }
